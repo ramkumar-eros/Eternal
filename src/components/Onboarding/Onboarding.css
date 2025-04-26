@@ -1,0 +1,56 @@
+.onboarding-container {
+    height: 100vh;
+    width: 100%;
+    background-image: url('./bg.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    position: relative;
+  }
+  
+  /* Darken background for better text visibility */
+  .onboarding-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
+  
+  .onboarding-content {
+    text-align: center;
+    z-index: 2;
+    padding: 2rem;
+    max-width: 80%;
+  }
+  
+  .onboarding-content h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+  
+  .onboarding-content p {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .next-button {
+    background-color: #60b5fb; /* Light blue color similar to your image */
+    color: white;
+    border: none;
+    padding: 12px 50px;
+    font-size: 1rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .next-button:hover {
+    background-color: #4a90e2;
+  }

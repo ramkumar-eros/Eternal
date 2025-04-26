@@ -1,0 +1,9 @@
+/* Mobile styles */
+@media (max-width: 768px) {
+    .container {
+      padding: 10px;
+      font-size: 14px;
+    }
+    
+    /* Other mobile-specific styles */
+  }

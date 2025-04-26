@@ -1,0 +1,101 @@
+/* src/pages/QuestionsPage.css */
+.questions-page {
+  width: 100%;
+  min-height: 100vh;
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(75, 143, 213, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(91, 192, 190, 0.15) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(120, 214, 114, 0.1) 0%, transparent 60%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Add subtle star-like dots */
+.questions-page::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 10% 10%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    radial-gradient(circle at 60% 30%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+    radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 500px 500px;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+.questions-container {
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.questions-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.eternal-logo {
+  height: 80px;
+  margin-bottom: 16px;
+}
+
+.questions-subtitle {
+  font-size: 36px;
+  color: white;
+  font-weight: 500;
+  margin: 0;
+  letter-spacing: 1px;
+}
+
+.question-content {
+  width: 100%;
+  background: rgba(10, 10, 10, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+  .question-content {
+    padding: 30px;
+  }
+  
+  .eternal-logo {
+    height: 60px;
+  }
+  
+  .questions-subtitle {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 576px) {
+  .question-content {
+    padding: 20px;
+  }
+  
+  .eternal-logo {
+    height: 50px;
+  }
+  
+  .questions-subtitle {
+    font-size: 24px;
+  }
+}
