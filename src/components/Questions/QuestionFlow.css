@@ -1,0 +1,143 @@
+/* src/components/Questions/QuestionFlow.css */
+.question-flow-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.questions-pair {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.navigation-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 40px;
+  width: 100%;
+}
+
+.prev-button, .next-button {
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.prev-button {
+  background-color: transparent;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  margin-right: 16px;
+}
+
+.prev-button:hover {
+  border-color: white;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.next-button {
+  background-color: white;
+  color: #4B8FD5;
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.next-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(75, 143, 213, 0.1), rgba(91, 192, 190, 0.1));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.next-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.next-button:hover::before {
+  opacity: 1;
+}
+
+.next-button:disabled {
+  background-color: rgba(255, 255, 255, 0.5);
+  color: rgba(75, 143, 213, 0.5);
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.next-button:disabled::before {
+  opacity: 0;
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.loading-spinner {
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-left: 4px solid #4B8FD5;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 24px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-overlay p {
+  color: white;
+  font-size: 20px;
+  font-weight: 500;
+  text-align: center;
+  max-width: 80%;
+  background: linear-gradient(90deg, #4B8FD5, #5BC0BE);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+  .prev-button, .next-button {
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+  
+  .loading-spinner {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .loading-overlay p {
+    font-size: 18px;
+  }
+}

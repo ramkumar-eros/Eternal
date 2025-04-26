@@ -1,0 +1,368 @@
+/* src/components/Results/AuraResult.css */
+.aura-result-container {
+  background-color: #000;
+  color: white;
+  min-height: 100vh;
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-image: 
+    radial-gradient(circle at 20% 20%, rgba(75, 143, 213, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(91, 192, 190, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(120, 214, 114, 0.1) 0%, transparent 70%);
+}
+
+.eternal-logo {
+  font-size: 3.5rem;
+  margin: 0;
+  background: linear-gradient(90deg, #4B8FD5 0%, #5BC0BE 50%, #78D672 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: bold;
+}
+
+.result-title {
+  font-size: 2rem;
+  margin-top: 0.5rem;
+  font-weight: normal;
+  margin-bottom: 2.5rem;
+  color: white;
+}
+
+.aura-visualization {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  margin-bottom: 3rem;
+  box-shadow: 0 0 10px rgba(120, 214, 114, 0.5); /* Add soft shadow for better lighting effect */
+}
+
+
+.aura-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  filter: blur(30px); /* Adjust blur as needed */
+  animation: pulse 8s infinite alternate;
+}
+
+
+.silhouette {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 200px;
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='200' viewBox='0 0 100 200' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0C40 0 35 10 35 20C35 30 40 35 40 40C40 45 37.5 50 35 55C32.5 60 30 65 30 70C30 75 32.5 80 35 85C37.5 90 40 95 40 100C40 105 35 115 35 125C35 135 40 145 45 155C50 165 55 175 50 185C45 195 40 200 40 200H60C60 200 55 195 50 185C45 175 50 165 55 155C60 145 65 135 65 125C65 115 60 105 60 100C60 95 62.5 90 65 85C67.5 80 70 75 70 70C70 65 67.5 60 65 55C62.5 50 60 45 60 40C60 35 65 30 65 20C65 10 60 0 50 0Z' fill='black'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  z-index: 2;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.7; transform: scale(0.95); }
+  50% { opacity: 0.9; transform: scale(1.05); }
+  100% { opacity: 0.7; transform: scale(0.95); }
+}
+
+/* Tabs navigation */
+.result-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  width: 100%;
+  max-width: 800px;
+  flex-wrap: wrap;
+}
+
+.tab-button {
+  background: transparent;
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50px;
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab-button.active {
+  background: rgba(91, 192, 190, 0.2);
+  border-color: #5BC0BE;
+  box-shadow: 0 0 15px rgba(91, 192, 190, 0.3);
+}
+
+.tab-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Content sections */
+.result-content {
+  width: 100%;
+  max-width: 800px;
+  background: rgba(15, 15, 15, 0.8);
+  border-radius: 16px;
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.result-content h3 {
+  margin-top: 0;
+  margin-bottom: 1.8rem;
+  font-size: 1.8rem;
+  background: linear-gradient(90deg, #4B8FD5 0%, #5BC0BE 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+}
+
+.result-content h4 {
+  margin-top: 0;
+  margin-bottom: 1.2rem;
+  font-size: 1.4rem;
+  color: #5BC0BE;
+  font-weight: 500;
+}
+
+.section-content {
+  line-height: 1.6;
+  font-size: 1.05rem;
+  white-space: pre-line;
+}
+
+/* Energy Plan specific styles */
+.energy-plan-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.8rem;
+  margin-bottom: 2.5rem;
+}
+
+.energy-box {
+  background: rgba(10, 10, 10, 0.7);
+  border-radius: 12px;
+  padding: 1.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: transform 0.3s ease;
+}
+
+.energy-box:hover {
+  transform: translateY(-5px);
+}
+
+.energy-box.boost {
+  border-left: 4px solid #78D672;
+}
+
+.energy-box.drain {
+  border-left: 4px solid #FF5757;
+}
+
+.energy-list {
+  padding-left: 1.5rem;
+  margin: 0;
+}
+
+.energy-list li {
+  margin-bottom: 1rem;
+  line-height: 1.5;
+  position: relative;
+}
+
+.energy-list li::before {
+  content: "";
+  position: absolute;
+  left: -1.2rem;
+  top: 0.5rem;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.boost .energy-list li::before {
+  background-color: #78D672;
+  box-shadow: 0 0 8px rgba(120, 214, 114, 0.6);
+}
+
+.drain .energy-list li::before {
+  background-color: #FF5757;
+  box-shadow: 0 0 8px rgba(255, 87, 87, 0.6);
+}
+
+.alignment-section {
+  margin-bottom: 2.5rem;
+  background: rgba(10, 10, 10, 0.7);
+  border-radius: 12px;
+  padding: 1.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-left: 4px solid #4B8FD5;
+}
+
+.alignment-list {
+  padding-left: 1.8rem;
+  margin: 0;
+}
+
+.alignment-list li {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+  padding-left: 0.5rem;
+}
+
+.daily-practice {
+  background: rgba(10, 10, 10, 0.7);
+  border-radius: 12px;
+  padding: 1.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-left: 4px solid #5BC0BE;
+}
+
+.practice-content {
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+.no-data {
+  font-style: italic;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* Action buttons */
+.action-buttons {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.share-button, .retake-button {
+  padding: 0.9rem 2.5rem;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.share-button {
+  background: linear-gradient(90deg, #4B8FD5 0%, #5BC0BE 100%);
+  color: white;
+  font-weight: 500;
+}
+
+.share-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(91, 192, 190, 0.3);
+}
+
+.retake-button {
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+}
+
+.retake-button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Loading state */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100%;
+  background-color: #000;
+  color: white;
+}
+
+.loading-spinner {
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-left: 4px solid #5BC0BE;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1.5rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loading-container p {
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+}
+
+/* Custom scrollbar */
+.result-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.result-content::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.result-content::-webkit-scrollbar-thumb {
+  background: rgba(91, 192, 190, 0.5);
+  border-radius: 10px;
+}
+
+.result-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(91, 192, 190, 0.7);
+}
+
+/* Media queries for responsive design */
+@media (max-width: 768px) {
+  .eternal-logo {
+    font-size: 2.5rem;
+  }
+  
+  .result-title {
+    font-size: 1.5rem;
+  }
+  
+  .result-content {
+    padding: 1.5rem;
+  }
+  
+  .energy-plan-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .share-button, .retake-button {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .result-content h3 {
+    font-size: 1.5rem;
+  }
+  
+  .result-content h4 {
+    font-size: 1.2rem;
+  }
+}
