@@ -2,8 +2,8 @@
 import axios from 'axios';
 
 // Replace with your actual API endpoint and key management strategy
-const API_ENDPOINT = process.env.REACT_APP_GPT_API_ENDPOINT || 'https://api.openai.com/v1/chat/completions';
-const API_KEY = process.env.REACT_APP_OPENAI_API_KEY
+const API_ENDPOINT = process.env.REACT_APP_GPT_API_ENDPOINT
+const API_KEY = process.env.REACT_APP_OPENAI_API_KEY 
 
 /**
  * Generates a personalized aura reading and profile based on user answers
