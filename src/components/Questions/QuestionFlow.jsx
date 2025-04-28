@@ -70,6 +70,19 @@ const QuestionFlow = () => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
+  // Calculate progress percentage
+  const progressPercentage = ((currentPairIndex + 1) / questionPairs.length) * 100;
+  
+  // Get current question numbers for display
+  const getCurrentQuestionNumbers = () => {
+    const currentPair = questionPairs[currentPairIndex];
+    if (currentPair.length === 2) {
+      return `Questions ${currentPair[0] + 1}-${currentPair[1] + 1}`;
+    } else {
+      return `Question ${currentPair[0] + 1}`;
+    }
+  };
+
   // Check if all questions in the current pair are answered
   const currentPairAnswered = () => {
     const currentPair = questionPairs[currentPairIndex];
@@ -92,6 +105,11 @@ const QuestionFlow = () => {
   const handleNextPair = () => {
     if (currentPairIndex < questionPairs.length - 1) {
       setCurrentPairIndex(currentPairIndex + 1);
+      // Smooth scroll to top of questions on page change
+      document.querySelector('.question-content').scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
     } else {
       // Submit answers if all questions are answered
       handleSubmitAnswers();
@@ -102,6 +120,11 @@ const QuestionFlow = () => {
   const handlePreviousPair = () => {
     if (currentPairIndex > 0) {
       setCurrentPairIndex(currentPairIndex - 1);
+      // Smooth scroll to top of questions on page change
+      document.querySelector('.question-content').scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
     }
   };
 
@@ -181,11 +204,22 @@ const QuestionFlow = () => {
     <div className="question-flow-container">
       {isLoading ? (
         <div className="loading-overlay">
-          <div className="loading-spinner"></div>
-          <p>Generating your Eternal Aura...</p>
+          <div className="loading-container">
+            <div className="loading-aura"></div>
+            <div className="loading-spinner"></div>
+          </div>
+          <p>Discovering Your Eternal Aura...</p>
         </div>
       ) : (
         <>
+          <div className="progress-container">
+            <span className="progress-text">{getCurrentQuestionNumbers()}</span>
+            <div className="progress-bar">
+              <div className="progress-fill" style={{ width: `${progressPercentage}%` }}></div>
+            </div>
+            <span className="progress-text">{currentPairIndex + 1}/{questionPairs.length}</span>
+          </div>
+
           {renderCurrentQuestionPair()}
 
           <div className="navigation-buttons">

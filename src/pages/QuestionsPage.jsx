@@ -23,10 +23,29 @@ const QuestionsPage = () => {
 
   return (
     <div className="questions-page">
+      {/* Background effects */}
+      <div className="bg-effects">
+        <div className="bg-gradient-1"></div>
+        <div className="bg-gradient-2"></div>
+        <div className="bg-gradient-3"></div>
+        <div className="stars"></div>
+        
+        {/* Animated stars */}
+        <div className="animated-star star-1"></div>
+        <div className="animated-star star-2"></div>
+        <div className="animated-star star-3"></div>
+        <div className="animated-star star-4"></div>
+        <div className="animated-star star-5"></div>
+        
+        {/* Floating orbs */}
+        <div className="floating-orb orb-1"></div>
+        <div className="floating-orb orb-2"></div>
+      </div>
+      
       <div className="questions-container">
         <div className="questions-header">
           <img src={logo} alt="ETERNAL" className="eternal-logo" />
-          <h2 className="questions-subtitle">Questions</h2>
+          <h2 className="questions-subtitle">Discover Your Eternal Aura</h2>
         </div>
         
         <div className="question-content">

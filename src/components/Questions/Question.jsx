@@ -12,9 +12,12 @@ const Question = ({
 }) => {
   return (
     <div className="question-wrapper">
+      <div className="glow-orb glow-blue"></div>
+      <div className="glow-orb glow-teal"></div>
+      
       <div className="question">
         <h3 className="question-number-text">
-          <span className="question-number">{questionNumber}.</span> {questionText}
+          <span className="question-number">{questionNumber}</span> {questionText}
         </h3>
 
         <div className="options-grid">
