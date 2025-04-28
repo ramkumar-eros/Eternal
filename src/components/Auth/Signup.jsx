@@ -319,7 +319,7 @@ const Signup = () => {
                   <StyledInput
                     type="text"
                     name="emailPhone"
-                    placeholder="Enter email or phone number"
+                    placeholder="Enter email"
                     value={formData.emailPhone}
                     onChange={handleChange}
                     required
