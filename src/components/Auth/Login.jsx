@@ -38,10 +38,14 @@ const Login = () => {
       <GlowCircle top="50%" left="10%" size="200px" delay="2s" />
       <GlowCircle top="80%" left="30%" size="250px" delay="4s" />
       
+      <LogoContainerMobile>
+        <img src={logo} alt="Eternal Logo" />
+      </LogoContainerMobile>
+      
       <LeftSection>
-        <LogoContainer>
+        <LogoContainerDesktop>
           <img src={logo} alt="Eternal Logo" />
-        </LogoContainer>
+        </LogoContainerDesktop>
         <LoginImageWrapper>
           <LoginImage src={loginImage} alt="Spiritual journey" />
           <ImageOverlay>
@@ -139,6 +143,10 @@ const LoginContainer = styled.div`
   background-color: #050b14;
   overflow: hidden;
   position: relative;
+
+  @media (max-width: 992px) {
+    flex-direction: column;
+  }
 `;
 
 const GlowEffect = styled.div`
@@ -178,6 +186,49 @@ const GlowCircle = styled.div`
       opacity: 0.6;
     }
   }
+
+  @media (max-width: 768px) {
+    width: calc(${props => props.size || '200px'} * 0.8);
+    height: calc(${props => props.size || '200px'} * 0.8);
+  }
+`;
+
+// Logo container for desktop view
+const LogoContainerDesktop = styled.div`
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  z-index: 5;
+  
+  img {
+    height: 40px;
+    width: auto;
+  }
+
+  @media (max-width: 992px) {
+    display: none; // Hide on mobile
+  }
+`;
+
+// Logo container for mobile view - placed above all content
+const LogoContainerMobile = styled.div`
+  display: none;
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 10;
+  
+  img {
+    height: 30px;
+    width: auto;
+  }
+
+  @media (max-width: 992px) {
+    display: flex;
+  }
 `;
 
 const LeftSection = styled.div`
@@ -188,29 +239,17 @@ const LeftSection = styled.div`
   align-items: center;
   position: relative;
   z-index: 1;
-`;
 
-const LogoContainer = styled.div`
-  position: absolute;
-  top: 2rem;
-  left: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  
-  img {
-    height: 40px;
-    width: auto;
+  @media (max-width: 992px) {
+    flex: none;
+    width: 100%;
+    height: 40vh;
+    min-height: 250px;
   }
-`;
 
-const LogoText = styled.div`
-  font-size: 1.5rem;
-  font-weight: 700;
-  background: linear-gradient(90deg, #4AA5FF, #4ADEDE);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  letter-spacing: 2px;
+  @media (max-width: 576px) {
+    height: 35vh;
+  }
 `;
 
 const LoginImageWrapper = styled.div`
@@ -220,6 +259,13 @@ const LoginImageWrapper = styled.div`
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+
+  @media (max-width: 992px) {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    border-radius: 0;
+  }
 `;
 
 const LoginImage = styled.img`
@@ -233,6 +279,12 @@ const LoginImage = styled.img`
   &:hover {
     transform: scale(1.05);
   }
+
+  @media (max-width: 992px) {
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+  }
 `;
 
 const ImageOverlay = styled.div`
@@ -245,6 +297,10 @@ const ImageOverlay = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  @media (max-width: 576px) {
+    padding: 2rem 1rem 1.5rem;
+  }
 `;
 
 const TagLine = styled.h2`
@@ -254,6 +310,14 @@ const TagLine = styled.h2`
   text-align: center;
   margin: 0;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+
+  @media (max-width: 768px) {
+    font-size: 1.6rem;
+  }
+
+  @media (max-width: 576px) {
+    font-size: 1.4rem;
+  }
 `;
 
 const RightSection = styled.div`
@@ -267,12 +331,37 @@ const RightSection = styled.div`
   position: relative;
   z-index: 1;
   box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
+
+  @media (max-width: 992px) {
+    flex: none;
+    width: 100%;
+    border-radius: 40px 40px 0 0;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3);
+    min-height: 60vh;
+    padding: 2rem 0;
+  }
 `;
 
 const LoginForm = styled.form`
   width: 85%;
   max-width: 400px;
   padding: 3rem 2rem;
+
+  @media (max-width: 768px) {
+    width: 90%;
+    max-width: 500px;
+    padding: 2rem 1.5rem;
+  }
+
+  @media (max-width: 576px) {
+    width: 95%;
+    padding: 1.5rem 1rem;
+  }
+
+  @media (max-height: 667px) and (max-width: 992px) {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
 `;
 
 const LoginHeader = styled.h2`
@@ -283,6 +372,19 @@ const LoginHeader = styled.h2`
   background: linear-gradient(90deg, #FFFFFF, #4ADEDE);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+
+  @media (max-width: 768px) {
+    font-size: 2.2rem;
+  }
+
+  @media (max-width: 576px) {
+    font-size: 1.8rem;
+  }
+
+  @media (max-height: 667px) and (max-width: 992px) {
+    font-size: 1.8rem;
+    margin-bottom: 0.3rem;
+  }
 `;
 
 const LoginSubHeader = styled.p`
@@ -290,10 +392,28 @@ const LoginSubHeader = styled.p`
   font-size: 1.1rem;
   margin-bottom: 2.5rem;
   font-weight: 300;
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  @media (max-width: 576px) {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-height: 667px) and (max-width: 992px) {
+    margin-bottom: 1.2rem;
+  }
 `;
 
 const InputGroup = styled.div`
   margin-bottom: 1.5rem;
+
+  @media (max-height: 667px) and (max-width: 992px) {
+    margin-bottom: 1rem;
+  }
 `;
 
 const InputLabel = styled.label`
@@ -301,6 +421,11 @@ const InputLabel = styled.label`
   color: #d1e9ff;
   margin-bottom: 0.5rem;
   font-size: 0.9rem;
+
+  @media (max-width: 576px) {
+    font-size: 0.85rem;
+    margin-bottom: 0.3rem;
+  }
 `;
 
 const InputWrapper = styled.div`
@@ -335,6 +460,16 @@ const StyledInput = styled.input`
   &::placeholder {
     color: #6d90b9;
   }
+
+  @media (max-width: 576px) {
+    padding: 0.9rem 1rem 0.9rem 2.6rem;
+    font-size: 0.95rem;
+    border-radius: 10px;
+  }
+
+  @media (max-height: 667px) and (max-width: 992px) {
+    padding: 0.8rem 1rem 0.8rem 2.6rem;
+  }
 `;
 
 const PasswordToggle = styled.span`
@@ -363,6 +498,15 @@ const ForgotPassword = styled.div`
     color: #4ADEDE;
     text-decoration: underline;
   }
+
+  @media (max-width: 576px) {
+    font-size: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-height: 667px) and (max-width: 992px) {
+    margin-bottom: 1.2rem;
+  }
 `;
 
 const LoginButton = styled.button`
@@ -383,6 +527,7 @@ const LoginButton = styled.button`
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  min-height: 48px;
   
   &:hover {
     background: linear-gradient(90deg, #3994f0, #3bc9c9);
@@ -432,6 +577,22 @@ const LoginButton = styled.button`
       display: none;
     }
   }
+
+  @media (max-width: 768px) {
+    padding: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 576px) {
+    padding: 0.8rem;
+    border-radius: 10px;
+    font-size: 0.95rem;
+  }
+
+  @media (max-height: 667px) and (max-width: 992px) {
+    margin-bottom: 1.2rem;
+    padding: 0.7rem;
+  }
 `;
 
 const LoadingSpinner = styled.div`
@@ -453,6 +614,10 @@ const SignupText = styled.div`
   text-align: center;
   color: #a9d8ff;
   font-size: 0.9rem;
+
+  @media (max-width: 576px) {
+    font-size: 0.85rem;
+  }
 `;
 
 const SignupLink = styled(Link)`
@@ -476,6 +641,17 @@ const ErrorMessage = styled.div`
   margin-bottom: 1.5rem;
   border-radius: 0 8px 8px 0;
   font-size: 0.9rem;
+
+  @media (max-width: 576px) {
+    padding: 0.7rem 0.9rem;
+    font-size: 0.85rem;
+    margin-bottom: 1.2rem;
+  }
+
+  @media (max-height: 667px) and (max-width: 992px) {
+    padding: 0.6rem 0.8rem;
+    margin-bottom: 1rem;
+  }
 `;
 
 export default Login;

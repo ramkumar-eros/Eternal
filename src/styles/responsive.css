@@ -1,9 +1,539 @@
-/* Mobile styles */
-@media (max-width: 768px) {
-    .container {
-      padding: 10px;
-      font-size: 14px;
-    }
-    
-    /* Other mobile-specific styles */
+/* Global Responsive Styles - Add to index.css */
+
+/* Base responsive settings */
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Viewport-based font sizing for better responsiveness */
+html {
+  font-size: 16px;
+}
+
+@media (max-width: 1200px) {
+  html {
+    font-size: 15px;
   }
+}
+
+@media (max-width: 992px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 576px) {
+  html {
+    font-size: 12px;
+  }
+}
+
+/* Fluid container sizes */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (max-width: 1200px) {
+  .container {
+    max-width: 100%;
+    padding: 0 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .container {
+    padding: 0 1rem;
+  }
+}
+
+/* Media query breakpoints:
+ * xs: 0-575px (phones)
+ * sm: 576-767px (large phones/small tablets)
+ * md: 768-991px (tablets)
+ * lg: 992-1199px (desktops)
+ * xl: 1200px+ (large desktops)
+ */
+
+/* Fix for FlexBox layouts on mobile */
+.flex-wrap-fix {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* Responsive image settings */
+img, svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Touch-friendly button sizes on mobile */
+button, 
+.button,
+input[type="button"],
+input[type="submit"] {
+  min-height: 44px; /* minimum touch target size */
+}
+
+@media (max-width: 576px) {
+  button, 
+  .button,
+  input[type="button"],
+  input[type="submit"] {
+    width: 100%; /* full width on mobile */
+    margin-bottom: 0.75rem;
+  }
+}
+
+/* ======= Login & Signup Pages ======= */
+@media (max-width: 992px) {
+  .LoginContainer, .SignupContainer {
+    flex-direction: column;
+  }
+  
+  .LeftSection, .RightSection {
+    flex: none;
+    width: 100%;
+  }
+  
+  .RightSection {
+    border-radius: 40px 40px 0 0;
+    min-height: 65vh;
+  }
+  
+  .LoginImageWrapper, .SignupImageWrapper {
+    width: 100%;
+    max-width: 100%;
+    height: 35vh;
+    min-height: 250px;
+  }
+  
+  .LoginForm, .SignupForm {
+    width: 100%;
+    max-width: 500px;
+    padding: 2rem 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .LoginHeader, .SignupHeader {
+    font-size: 1.8rem;
+  }
+  
+  .LoginSubHeader, .SignupSubHeader {
+    font-size: 1rem;
+  }
+  
+  .LogoContainer img {
+    height: 30px;
+  }
+  
+  .TagLine, .WelcomeHeading {
+    font-size: 1.4rem;
+  }
+  
+  .WelcomeSubtext {
+    font-size: 0.9rem;
+  }
+  
+  .StyledInput, .InputWrapper {
+    height: 46px;
+  }
+  
+  .InputLabel {
+    font-size: 0.85rem;
+  }
+  
+  .GenderOptions {
+    flex-direction: column;
+  }
+  
+  .RadioCard {
+    margin-bottom: 0.5rem;
+  }
+  
+  .DateTimeGrid {
+    gap: 1rem;
+  }
+  
+  .DatePickerWrapper, .TimeInput {
+    height: 46px;
+  }
+}
+
+/* ======= Onboarding Screen ======= */
+@media (max-width: 992px) {
+  .AnimatedCard {
+    flex-direction: column;
+    max-width: 600px;
+  }
+  
+  .CardImage {
+    height: 220px;
+  }
+  
+  .CardContent {
+    padding: 2rem;
+  }
+  
+  .StepTitle {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .CardContent {
+    padding: 1.5rem;
+  }
+  
+  .StepTitle {
+    font-size: 1.8rem;
+  }
+  
+  .StepSubtitle {
+    font-size: 1rem;
+  }
+  
+  .StepDescription {
+    font-size: 0.95rem;
+  }
+  
+  .ButtonContainer {
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+  }
+  
+  .NextButton, .SkipButton, .BeginButton {
+    width: 100%;
+  }
+}
+
+/* ======= Questions Screen ======= */
+@media (max-width: 768px) {
+  .questions-page {
+    padding: 20px 12px;
+    min-height: 100vh;
+    align-items: flex-start;
+    padding-top: 2rem;
+  }
+  
+  .questions-header {
+    margin-bottom: 1.5rem;
+  }
+  
+  .eternal-logo {
+    height: 60px;
+    margin-bottom: 16px;
+  }
+  
+  .questions-subtitle {
+    font-size: 1.6rem;
+  }
+  
+  .question-content {
+    padding: 1.5rem 1rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  }
+  
+  .question {
+    padding: 1.25rem;
+  }
+  
+  .question-number-text {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .question-number {
+    font-size: 1.4rem;
+  }
+  
+  .options-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .option-button {
+    padding: 14px;
+    font-size: 0.95rem;
+    min-height: 56px;
+  }
+  
+  .progress-container {
+    padding: 10px;
+    border-radius: 30px;
+  }
+
+  .progress-text {
+    font-size: 0.8rem;
+  }
+
+  .navigation-buttons {
+    margin-top: 1.5rem;
+  }
+
+  .prev-button, .next-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .questions-subtitle {
+    font-size: 1.4rem;
+  }
+  
+  .eternal-logo {
+    height: 50px;
+  }
+  
+  .question-content {
+    padding: 1.25rem 0.75rem;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  .question {
+    padding: 1rem;
+  }
+  
+  .question-number-text {
+    font-size: 1rem;
+  }
+  
+  .navigation-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .prev-button, .next-button {
+    width: 100%;
+    margin-right: 0;
+  }
+}
+
+/* ======= Results Screen ======= */
+@media (max-width: 768px) {
+  .aura-result-container {
+    padding: 1.5rem 1rem;
+  }
+  
+  .results-header {
+    margin-bottom: 1.5rem;
+  }
+  
+  .eternal-logo {
+    height: 60px;
+    margin-bottom: 16px;
+  }
+  
+  .result-title {
+    font-size: 1.6rem;
+  }
+  
+  .aura-visualization {
+    width: 250px;
+    height: 250px;
+    margin-bottom: 2rem;
+  }
+  
+  .silhouette {
+    width: 80px;
+    height: 160px;
+  }
+  
+  .result-tabs {
+    margin-bottom: 1.5rem;
+    gap: 0.5rem;
+  }
+  
+  .tab-button {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+    border-radius: 30px;
+  }
+  
+  .result-content {
+    padding: 2rem 1.5rem;
+    margin-bottom: 2rem;
+    max-width: 100%;
+  }
+  
+  .result-content h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .result-content h4 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .section-content {
+    font-size: 0.95rem;
+  }
+  
+  .energy-box {
+    padding: 1.5rem;
+    min-height: auto;
+  }
+  
+  .energy-list li, .alignment-list li {
+    margin-bottom: 1rem;
+  }
+  
+  .alignment-section, .daily-practice {
+    padding: 1.5rem;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    max-width: 300px;
+    align-items: center;
+  }
+  
+  .share-button, .retake-button {
+    width: 100%;
+    padding: 0.8rem 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .aura-result-container {
+    padding: 1rem 0.75rem;
+  }
+  
+  .eternal-logo {
+    height: 50px;
+  }
+  
+  .result-title {
+    font-size: 1.4rem;
+  }
+  
+  .aura-visualization {
+    width: 220px;
+    height: 220px;
+  }
+  
+  .result-content {
+    padding: 1.5rem 1rem;
+    border-radius: 16px;
+  }
+  
+  .result-content h3 {
+    font-size: 1.3rem;
+  }
+  
+  .result-content h4 {
+    font-size: 1.1rem;
+  }
+  
+  .section-content {
+    font-size: 0.9rem;
+  }
+  
+  .energy-plan-container {
+    gap: 1rem;
+  }
+  
+  .energy-box {
+    padding: 1.25rem;
+  }
+  
+  .alignment-section, .daily-practice {
+    padding: 1.25rem;
+  }
+}
+
+/* Mobile keyboard appearance fixes */
+@media (max-height: 600px) {
+  .LoginForm, .SignupForm {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  
+  .LoginHeader, .SignupHeader {
+    font-size: 1.6rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .LoginSubHeader, .SignupSubHeader {
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .InputGroup {
+    margin-bottom: 1rem;
+  }
+  
+  .StyledInput {
+    padding: 0.75rem 1rem 0.75rem 2.5rem;
+  }
+}
+
+/* Fix overflow issues that can cause horizontal scrolling */
+.overflow-fix {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* ======= Animation performance improvements for mobile ======= */
+@media (max-width: 768px) {
+  /* Reduce animation complexity for better performance */
+  .aura-glow, .orb-1, .orb-2, .orb-3, .orb-4 {
+    animation-duration: 30s; /* Slow down animations */
+  }
+  
+  .loading-aura, .loading-spinner, .cosmic-star, .floating-orb {
+    will-change: transform, opacity; /* Hardware acceleration hint */
+  }
+  
+  /* Disable some animations on low-power devices */
+  @media (prefers-reduced-motion: reduce) {
+    .gentle-float, .float-orb, .pulse, .inner-pulse, .shimmer, .twinkle,
+    .star-1, .star-2, .star-3, .star-4, .star-5, .star-6, .star-7, .star-8,
+    .shooting-1, .shooting-2, .shooting-3 {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+}
+
+/* ======= Touch-friendly improvements ======= */
+@media (max-width: 768px) {
+  /* Increase touch targets */
+  .tab-button, .option-button, .next-button, .prev-button,
+  .share-button, .retake-button, .LoginButton, .SignupButton,
+  .UploadButton, .VoiceRecordButton {
+    min-height: 44px;
+    touch-action: manipulation; /* Optimize for touch */
+  }
+  
+  /* Add active state for touch feedback */
+  .tab-button:active, .option-button:active, .next-button:active,
+  .prev-button:active, .share-button:active, .retake-button:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+} 

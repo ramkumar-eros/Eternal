@@ -1,4 +1,4 @@
-// src/components/Auth/SignupStyles.js
+// src/components/Auth/SignupStyles.js - Mobile Responsive Update
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
@@ -9,6 +9,10 @@ export const SignupContainer = styled.div`
   background-color: #050b14;
   overflow: hidden;
   position: relative;
+  
+  @media (max-width: 992px) {
+    flex-direction: column;
+  }
 `;
 
 export const CosmicBackground = styled.div`
@@ -48,6 +52,10 @@ export const StarField = styled.div`
       opacity: 0.3;
     }
   }
+  
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
 `;
 
 export const OrbFloat = styled.div`
@@ -74,6 +82,16 @@ export const OrbFloat = styled.div`
       transform: translateY(0) scale(1);
     }
   }
+  
+  @media (max-width: 768px) {
+    width: calc(${props => props.size} * 0.7);
+    height: calc(${props => props.size} * 0.7);
+    animation-duration: 20s;
+  }
+  
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
 `;
 
 // Left Section
@@ -85,6 +103,13 @@ export const LeftSection = styled.div`
   align-items: center;
   position: relative;
   z-index: 2;
+  
+  @media (max-width: 992px) {
+    flex: none;
+    width: 100%;
+    height: 35vh;
+    min-height: 200px;
+  }
 `;
 
 export const LogoContainer = styled.div`
@@ -99,6 +124,15 @@ export const LogoContainer = styled.div`
   img {
     height: 40px;
     width: auto;
+  }
+  
+  @media (max-width: 576px) {
+    top: 1rem;
+    left: 1rem;
+    
+    img {
+      height: 30px;
+    }
   }
 `;
 
@@ -118,6 +152,13 @@ export const SignupImageWrapper = styled.div`
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  
+  @media (max-width: 992px) {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    border-radius: 0;
+  }
 `;
 
 export const SignupImage = styled.img`
@@ -131,6 +172,19 @@ export const SignupImage = styled.img`
   &:hover {
     transform: scale(1.05);
   }
+  
+  @media (max-width: 992px) {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 0;
+    transform: none;
+    transition: none;
+    
+    &:hover {
+      transform: none;
+    }
+  }
 `;
 
 export const PortalOverlay = styled.div`
@@ -141,6 +195,10 @@ export const PortalOverlay = styled.div`
   bottom: 0;
   background: radial-gradient(circle at center, transparent 30%, rgba(0, 12, 24, 0.7) 100%);
   border-radius: 20px;
+  
+  @media (max-width: 992px) {
+    border-radius: 0;
+  }
 `;
 
 export const WelcomeText = styled.div`
@@ -154,6 +212,14 @@ export const WelcomeText = styled.div`
   flex-direction: column;
   align-items: center;
   text-align: center;
+  
+  @media (max-width: 768px) {
+    padding: 2rem 1.5rem 1.5rem;
+  }
+  
+  @media (max-width: 576px) {
+    padding: 1.5rem 1rem 1rem;
+  }
 `;
 
 export const WelcomeHeading = styled.h2`
@@ -162,6 +228,15 @@ export const WelcomeHeading = styled.h2`
   font-weight: 600;
   margin: 0 0 0.5rem;
   text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+  
+  @media (max-width: 768px) {
+    font-size: 1.6rem;
+    margin: 0 0 0.3rem;
+  }
+  
+  @media (max-width: 576px) {
+    font-size: 1.4rem;
+  }
 `;
 
 export const WelcomeSubtext = styled.p`
@@ -169,6 +244,14 @@ export const WelcomeSubtext = styled.p`
   font-size: 1rem;
   margin: 0;
   text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+  
+  @media (max-width: 768px) {
+    font-size: 0.9rem;
+  }
+  
+  @media (max-width: 576px) {
+    font-size: 0.85rem;
+  }
 `;
 
 // Right Section
@@ -184,12 +267,41 @@ export const RightSection = styled.div`
   z-index: 2;
   box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
   overflow-y: auto;
+  
+  @media (max-width: 992px) {
+    flex: none;
+    width: 100%;
+    border-radius: 40px 40px 0 0;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.3);
+    min-height: 65vh;
+    max-height: 65vh;
+    overflow-y: auto;
+  }
+  
+  @media (max-width: 576px) {
+    border-radius: 30px 30px 0 0;
+  }
 `;
 
 export const SignupForm = styled.form`
   width: 85%;
   max-width: 450px;
   padding: 2.5rem 2rem;
+  
+  @media (max-width: 992px) {
+    width: 90%;
+    max-width: 500px;
+    padding: 2rem 1.5rem;
+  }
+  
+  @media (max-width: 576px) {
+    width: 95%;
+    padding: 1.5rem 1rem;
+  }
+  
+  @media (max-height: 700px) {
+    padding: 1.5rem 1rem;
+  }
 `;
 
 export const SignupHeader = styled.h2`
@@ -200,6 +312,19 @@ export const SignupHeader = styled.h2`
   background: linear-gradient(90deg, #FFFFFF, #4ADEDE);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
+  
+  @media (max-width: 576px) {
+    font-size: 1.7rem;
+  }
+  
+  @media (max-height: 700px) {
+    font-size: 1.5rem;
+    margin-bottom: 0.3rem;
+  }
 `;
 
 export const SignupSubheader = styled.p`
@@ -207,6 +332,20 @@ export const SignupSubheader = styled.p`
   font-size: 1rem;
   margin-bottom: 2rem;
   font-weight: 300;
+  
+  @media (max-width: 768px) {
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  @media (max-width: 576px) {
+    font-size: 0.9rem;
+    margin-bottom: 1.2rem;
+  }
+  
+  @media (max-height: 700px) {
+    margin-bottom: 1rem;
+  }
 `;
 
 // Progress Bar
@@ -216,6 +355,14 @@ export const ProgressBar = styled.div`
   justify-content: space-between;
   margin-bottom: 2rem;
   position: relative;
+  
+  @media (max-width: 768px) {
+    margin-bottom: 1.5rem;
+  }
+  
+  @media (max-height: 700px) {
+    margin-bottom: 1rem;
+  }
 `;
 
 export const ProgressLine = styled.div`
@@ -242,6 +389,14 @@ export const ProgressDot = styled.div`
     box-shadow: 0 0 0 4px rgba(74, 222, 222, 0.3);
     transform: scale(1.2);
   `}
+  
+  @media (max-width: 576px) {
+    width: 14px;
+    height: 14px;
+    ${props => props.current && `
+      transform: scale(1.1);
+    `}
+  }
 `;
 
 export const StepContainer = styled.div`
@@ -262,6 +417,14 @@ export const StepContainer = styled.div`
 // Form Elements
 export const InputGroup = styled.div`
   margin-bottom: 1.5rem;
+  
+  @media (max-width: 768px) {
+    margin-bottom: 1.2rem;
+  }
+  
+  @media (max-height: 700px) {
+    margin-bottom: 1rem;
+  }
 `;
 
 export const InputLabel = styled.label`
@@ -270,6 +433,11 @@ export const InputLabel = styled.label`
   margin-bottom: 0.5rem;
   font-size: 0.9rem;
   font-weight: 500;
+  
+  @media (max-width: 576px) {
+    font-size: 0.85rem;
+    margin-bottom: 0.3rem;
+  }
 `;
 
 export const IconInput = styled.div`
@@ -282,6 +450,14 @@ export const InputIcon = styled.div`
   top: 50%;
   transform: translateY(-50%);
   color: #4ADEDE;
+  
+  @media (max-width: 576px) {
+    left: 0.8rem;
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
 `;
 
 export const StyledInput = styled.input`
@@ -304,6 +480,20 @@ export const StyledInput = styled.input`
   &::placeholder {
     color: #6d90b9;
   }
+  
+  @media (max-width: 768px) {
+    padding: 0.9rem 0.9rem 0.9rem 2.6rem;
+    border-radius: 10px;
+  }
+  
+  @media (max-width: 576px) {
+    padding: 0.8rem 0.8rem 0.8rem 2.4rem;
+    font-size: 0.95rem;
+  }
+  
+  @media (max-height: 700px) {
+    padding: 0.7rem 0.7rem 0.7rem 2.4rem;
+  }
 `;
 
 export const PasswordToggle = styled.span`
@@ -318,6 +508,14 @@ export const PasswordToggle = styled.span`
   &:hover {
     opacity: 0.8;
   }
+  
+  @media (max-width: 576px) {
+    right: 0.8rem;
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
 `;
 
 // Buttons
@@ -326,6 +524,19 @@ export const ButtonRow = styled.div`
   justify-content: space-between;
   gap: 1rem;
   margin-top: 2rem;
+  
+  @media (max-width: 768px) {
+    margin-top: 1.5rem;
+  }
+  
+  @media (max-width: 576px) {
+    margin-top: 1.2rem;
+    gap: 0.8rem;
+  }
+  
+  @media (max-height: 700px) {
+    margin-top: 1rem;
+  }
 `;
 
 export const NextButton = styled.button`
@@ -343,6 +554,7 @@ export const NextButton = styled.button`
   align-items: center;
   gap: 0.5rem;
   transition: all 0.3s ease;
+  min-height: 48px;
   
   &:hover {
     background: linear-gradient(90deg, #3994f0, #3bc9c9);
@@ -352,6 +564,26 @@ export const NextButton = styled.button`
   
   &:active {
     transform: translateY(0);
+  }
+  
+  @media (max-width: 768px) {
+    padding: 0.9rem;
+    border-radius: 10px;
+  }
+  
+  @media (max-width: 576px) {
+    padding: 0.8rem;
+    font-size: 0.95rem;
+    min-height: 44px;
+    
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+  
+  @media (max-height: 700px) {
+    padding: 0.7rem;
   }
 `;
 
@@ -370,9 +602,31 @@ export const BackButton = styled.button`
   align-items: center;
   gap: 0.5rem;
   transition: all 0.3s ease;
+  min-height: 48px;
   
   &:hover {
     background-color: rgba(74, 222, 222, 0.1);
+  }
+  
+  @media (max-width: 768px) {
+    padding: 0.9rem;
+    border-radius: 10px;
+  }
+  
+  @media (max-width: 576px) {
+    padding: 0.8rem;
+    font-size: 0.95rem;
+    min-height: 44px;
+    flex: 0.45;
+    
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+  
+  @media (max-height: 700px) {
+    padding: 0.7rem;
   }
 `;
 
@@ -393,6 +647,7 @@ export const SubmitButton = styled.button`
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  min-height: 48px;
   
   &:hover {
     background: linear-gradient(90deg, #3994f0, #3bc9c9);
@@ -442,6 +697,27 @@ export const SubmitButton = styled.button`
       display: none;
     }
   }
+  
+  @media (max-width: 768px) {
+    padding: 0.9rem;
+    border-radius: 10px;
+  }
+  
+  @media (max-width: 576px) {
+    padding: 0.8rem;
+    font-size: 0.95rem;
+    min-height: 44px;
+    flex: 0.55;
+    
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+  
+  @media (max-height: 700px) {
+    padding: 0.7rem;
+  }
 `;
 
 export const LoadingSpinner = styled.div`
@@ -457,22 +733,45 @@ export const LoadingSpinner = styled.div`
       transform: rotate(360deg);
     }
   }
+  
+  @media (max-width: 576px) {
+    width: 18px;
+    height: 18px;
+    border-width: 2px;
+  }
 `;
 
 // Gender Selection
 export const GenderGroup = styled.div`
   margin-bottom: 1.5rem;
+  
+  @media (max-width: 768px) {
+    margin-bottom: 1.2rem;
+  }
+  
+  @media (max-height: 700px) {
+    margin-bottom: 1rem;
+  }
 `;
 
 export const GenderOptions = styled.div`
   display: flex;
   gap: 0.5rem;
   flex-wrap: wrap;
+  
+  @media (max-width: 576px) {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
 `;
 
 export const RadioCard = styled.div`
   flex: 1;
   min-width: 100px;
+  
+  @media (max-width: 576px) {
+    margin-bottom: 0.5rem;
+  }
 `;
 
 export const RadioInput = styled.input`
@@ -509,6 +808,22 @@ export const RadioLabel = styled.label`
   &:hover {
     background-color: rgba(74, 222, 222, 0.1);
   }
+  
+  @media (max-width: 768px) {
+    padding: 0.8rem;
+    border-radius: 10px;
+  }
+  
+  @media (max-width: 576px) {
+    flex-direction: row;
+    padding: 0.7rem;
+    justify-content: flex-start;
+    gap: 1rem;
+  }
+  
+  @media (max-height: 700px) {
+    padding: 0.6rem;
+  }
 `;
 
 export const GenderIcon = styled.span`
@@ -516,13 +831,42 @@ export const GenderIcon = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
+  
+  @media (max-width: 576px) {
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+  }
 `;
 
 // Date and Time
 export const DateTimeContainer = styled.div`
   margin-bottom: 1.5rem;
+  
+  @media (max-width: 768px) {
+    margin-bottom: 1.2rem;
+  }
+  
+  @media (max-height: 700px) {
+    margin-bottom: 1rem;
+  }
 `;
 
+export const DateTimeGrid = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  
+  @media (max-width: 768px) {
+    gap: 16px;
+  }
+  
+  @media (max-height: 700px) {
+    gap: 12px;
+  }
+`;
 
 export const DateIcon = styled.div`
   position: absolute;
@@ -531,8 +875,15 @@ export const DateIcon = styled.div`
   transform: translateY(-50%);
   color: #4ADEDE;
   z-index: 1;
+  
+  @media (max-width: 576px) {
+    left: 0.8rem;
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
 `;
-
 
 export const TimeOption = styled.div`
   padding: 0.3rem 0.6rem;
@@ -545,11 +896,20 @@ export const TimeOption = styled.div`
   &:hover {
     background-color: ${props => props.active ? 'rgba(74, 165, 255, 0.5)' : 'rgba(74, 165, 255, 0.2)'};
   }
+  
+  @media (max-width: 576px) {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7rem;
+  }
 `;
 
 // Additional Data Section
 export const AdditionalDataContainer = styled.div`
   margin-bottom: 1rem;
+  
+  @media (max-height: 700px) {
+    margin-bottom: 0.8rem;
+  }
 `;
 
 export const OptionalTag = styled.span`
@@ -558,6 +918,10 @@ export const OptionalTag = styled.span`
   font-weight: normal;
   opacity: 0.7;
   margin-left: 0.5rem;
+  
+  @media (max-width: 576px) {
+    font-size: 0.7rem;
+  }
 `;
 
 // Voice recording
@@ -575,9 +939,27 @@ export const VoiceRecordButton = styled.button`
   justify-content: space-between;
   align-items: center;
   transition: all 0.3s ease;
+  min-height: 48px;
   
   &:hover {
     background-color: ${props => props.isRecording ? 'rgba(255, 107, 107, 0.2)' : 'rgba(74, 222, 222, 0.1)'};
+  }
+  
+  @media (max-width: 768px) {
+    padding: 0.9rem 1.2rem;
+    font-size: 0.95rem;
+    border-radius: 10px;
+    min-height: 44px;
+  }
+  
+  @media (max-width: 576px) {
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+    
+    svg {
+      width: 16px;
+      height: 16px;
+    }
   }
 `;
 
@@ -585,6 +967,13 @@ export const MicIcon = styled.span`
   color: #4AA5FF;
   display: flex;
   align-items: center;
+  
+  @media (max-width: 576px) {
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
 `;
 
 export const PulsingDot = styled.div`
@@ -608,12 +997,24 @@ export const PulsingDot = styled.div`
       box-shadow: 0 0 0 0 rgba(255, 107, 107, 0);
     }
   }
+  
+  @media (max-width: 576px) {
+    width: 10px;
+    height: 10px;
+  }
 `;
 
 export const PlayIcon = styled.span`
   color: #4ADEDE;
   display: flex;
   align-items: center;
+  
+  @media (max-width: 576px) {
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
 `;
 
 export const AudioPreview = styled.div`
@@ -637,12 +1038,27 @@ export const AudioPreview = styled.div`
   audio::-webkit-media-controls-time-remaining-display {
     color: white;
   }
+  
+  @media (max-width: 768px) {
+    border-radius: 10px;
+    margin-top: 0.5rem;
+    padding: 0.4rem;
+    
+    audio {
+      height: 32px;
+    }
+  }
 `;
 
 // Profile Upload
 export const ProfileUploadContainer = styled.div`
   display: flex;
   justify-content: center;
+  margin-top: 1rem;
+  
+  @media (max-height: 700px) {
+    margin-top: 0.7rem;
+  }
 `;
 
 export const UploadButton = styled.button`
@@ -671,6 +1087,22 @@ export const ProfilePreview = styled.div`
     transform: scale(1.05);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 0 5px rgba(74, 222, 222, 0.3);
   }
+  
+  @media (max-width: 768px) {
+    width: 100px;
+    height: 100px;
+  }
+  
+  @media (max-width: 576px) {
+    width: 90px;
+    height: 90px;
+    border-width: 2px;
+  }
+  
+  @media (max-height: 700px) {
+    width: 80px;
+    height: 80px;
+  }
 `;
 
 export const UploadPlaceholder = styled.div`
@@ -692,6 +1124,22 @@ export const UploadPlaceholder = styled.div`
     transform: scale(1.05);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
   }
+  
+  @media (max-width: 768px) {
+    width: 100px;
+    height: 100px;
+  }
+  
+  @media (max-width: 576px) {
+    width: 90px;
+    height: 90px;
+    gap: 0.3rem;
+  }
+  
+  @media (max-height: 700px) {
+    width: 80px;
+    height: 80px;
+  }
 `;
 
 export const UploadIcon = styled.div`
@@ -699,11 +1147,22 @@ export const UploadIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  
+  @media (max-width: 576px) {
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
 `;
 
 export const UploadText = styled.span`
   font-size: 0.8rem;
   color: #a9d8ff;
+  
+  @media (max-width: 576px) {
+    font-size: 0.75rem;
+  }
 `;
 
 // Login link and messages
@@ -712,6 +1171,15 @@ export const LoginText = styled.div`
   color: #a9d8ff;
   font-size: 0.9rem;
   margin-top: 1.5rem;
+  
+  @media (max-width: 768px) {
+    margin-top: 1.2rem;
+  }
+  
+  @media (max-width: 576px) {
+    font-size: 0.85rem;
+    margin-top: 1rem;
+  }
 `;
 
 export const LoginLink = styled(Link)`
@@ -735,6 +1203,19 @@ export const ErrorMessage = styled.div`
   margin-bottom: 1.5rem;
   border-radius: 0 8px 8px 0;
   font-size: 0.9rem;
+  
+  @media (max-width: 768px) {
+    padding: 0.7rem 0.9rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.85rem;
+  }
+  
+  @media (max-width: 576px) {
+    padding: 0.6rem 0.8rem;
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+    border-left-width: 2px;
+  }
 `;
 
 export const SuccessMessage = styled.div`
@@ -745,19 +1226,22 @@ export const SuccessMessage = styled.div`
   margin-bottom: 1.5rem;
   border-radius: 0 8px 8px 0;
   font-size: 0.9rem;
+  
+  @media (max-width: 768px) {
+    padding: 0.7rem 0.9rem;
+    margin-bottom: 1.2rem;
+    font-size: 0.85rem;
+  }
+  
+  @media (max-width: 576px) {
+    padding: 0.6rem 0.8rem;
+    margin-bottom: 1rem;
+    font-size: 0.8rem;
+    border-left-width: 2px;
+  }
 `;
 
-// Add these styles to your SignupStyles.js file
-
-// Updated DateTimeGrid for vertical layout
-export const DateTimeGrid = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  width: 100%;
-`;
-
-// Updated DatePickerContainer with improved full view
+// DatePicker specific styles
 export const DatePickerContainer = styled.div`
   position: relative;
   width: 100%;
@@ -779,6 +1263,11 @@ export const DatePickerContainer = styled.div`
     background-color: #1a242d;
     width: 100%;
     min-width: 320px;
+    
+    @media (max-width: 576px) {
+      min-width: 280px;
+      border-radius: 10px;
+    }
   }
   
   .react-datepicker__month-container {
@@ -792,6 +1281,10 @@ export const DatePickerContainer = styled.div`
     border-bottom: 1px solid #4AA5FF;
     color: white;
     padding: 12px 0;
+    
+    @media (max-width: 576px) {
+      padding: 8px 0;
+    }
   }
   
   .react-datepicker__current-month {
@@ -799,16 +1292,29 @@ export const DatePickerContainer = styled.div`
     font-size: 16px;
     font-weight: 600;
     margin-bottom: 10px;
+    
+    @media (max-width: 576px) {
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
   }
   
   .react-datepicker__navigation {
     top: 12px;
+    
+    @media (max-width: 576px) {
+      top: 8px;
+    }
   }
   
   .react-datepicker__day-names {
     display: flex;
     justify-content: space-around;
     margin-top: 8px;
+    
+    @media (max-width: 576px) {
+      margin-top: 4px;
+    }
   }
   
   .react-datepicker__day-name, 
@@ -820,11 +1326,22 @@ export const DatePickerContainer = styled.div`
     line-height: 40px;
     margin: 0;
     border-radius: 50%;
+    
+    @media (max-width: 576px) {
+      width: 32px;
+      height: 32px;
+      line-height: 32px;
+      font-size: 13px;
+    }
   }
   
   .react-datepicker__month {
     margin: 0;
     padding: 8px;
+    
+    @media (max-width: 576px) {
+      padding: 4px;
+    }
   }
   
   .react-datepicker__week {
@@ -844,6 +1361,12 @@ export const DatePickerContainer = styled.div`
     width: 100%;
     margin: 0 4px;
     max-width: 120px;
+    
+    @media (max-width: 576px) {
+      font-size: 13px;
+      padding: 6px;
+      max-width: 100px;
+    }
   }
   
   .react-datepicker__month-dropdown-container,
@@ -860,6 +1383,11 @@ export const DatePickerContainer = styled.div`
     overflow-y: auto;
     width: 100%;
     padding: 8px 0;
+    
+    @media (max-width: 576px) {
+      max-height: 220px;
+      padding: 6px 0;
+    }
   }
   
   .react-datepicker__year-option {
@@ -867,6 +1395,11 @@ export const DatePickerContainer = styled.div`
     color: white;
     &:hover {
       background-color: rgba(74, 222, 222, 0.2);
+    }
+    
+    @media (max-width: 576px) {
+      padding: 6px 12px;
+      font-size: 13px;
     }
   }
   
@@ -890,6 +1423,11 @@ export const DatePickerContainer = styled.div`
     color: white;
     font-size: 16px;
     margin-bottom: 10px;
+    
+    @media (max-width: 576px) {
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
   }
   
   /* Navigation styling */
@@ -899,6 +1437,14 @@ export const DatePickerContainer = styled.div`
   
   .react-datepicker__navigation:hover *::before {
     border-color: white;
+  }
+  
+  @media (max-width: 768px) {
+    margin-bottom: 12px;
+  }
+  
+  @media (max-width: 576px) {
+    margin-bottom: 8px;
   }
 `;
 
@@ -928,6 +1474,30 @@ export const DatePickerWrapper = styled.div`
       color: rgba(255, 255, 255, 0.5);
     }
   }
+  
+  @media (max-width: 768px) {
+    .react-datepicker__input-container input {
+      padding: 14px 14px 14px 44px;
+      border-radius: 10px;
+      height: 50px;
+      font-size: 15px;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .react-datepicker__input-container input {
+      padding: 12px 12px 12px 40px;
+      height: 46px;
+      font-size: 14px;
+    }
+  }
+  
+  @media (max-height: 700px) {
+    .react-datepicker__input-container input {
+      padding: 10px 10px 10px 38px;
+      height: 42px;
+    }
+  }
 `;
 
 // Updated TimePickerContainer
@@ -955,6 +1525,11 @@ export const TimePickerContainer = styled.div`
     height: 100%;
     display: flex;
     align-items: center;
+    
+    @media (max-width: 576px) {
+      padding-left: 25px;
+      padding-right: 80px;
+    }
   }
   
   .react-time-picker__inputGroup__input {
@@ -966,6 +1541,11 @@ export const TimePickerContainer = styled.div`
     height: 30px;
     padding: 0;
     margin: 0;
+    
+    @media (max-width: 576px) {
+      font-size: 14px;
+      height: 25px;
+    }
   }
   
   .react-time-picker__inputGroup__divider {
@@ -991,6 +1571,11 @@ export const TimePickerContainer = styled.div`
     z-index: 100;
     margin-top: 10px;
     padding: 10px;
+    
+    @media (max-width: 576px) {
+      border-radius: 10px;
+      padding: 8px;
+    }
   }
   
   .react-clock__face {
@@ -1027,6 +1612,19 @@ export const TimeInput = styled.div`
     border-color: #4ADEDE;
     box-shadow: 0 0 0 2px rgba(74, 222, 222, 0.2);
   }
+  
+  @media (max-width: 768px) {
+    height: 50px;
+    border-radius: 10px;
+  }
+  
+  @media (max-width: 576px) {
+    height: 46px;
+  }
+  
+  @media (max-height: 700px) {
+    height: 42px;
+  }
 `;
 
 // Label styling for separate date and time fields
@@ -1036,6 +1634,17 @@ export const DateTimeLabel = styled(InputLabel)`
   display: block;
   color: rgba(255, 255, 255, 0.7);
   font-size: 14px;
+  
+  @media (max-width: 576px) {
+    margin-top: 12px;
+    margin-bottom: 6px;
+    font-size: 13px;
+  }
+  
+  @media (max-height: 700px) {
+    margin-top: 10px;
+    margin-bottom: 5px;
+  }
 `;
 
 // Updated TimeIcon positioning
@@ -1049,6 +1658,15 @@ export const TimeIcon = styled.span`
   align-items: center;
   justify-content: center;
   z-index: 2;
+  
+  @media (max-width: 576px) {
+    left: 12px;
+    
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
 `;
 
 // Updated TimeToggle positioning
@@ -1063,4 +1681,8 @@ export const TimeToggle = styled.div`
   border-radius: 6px;
   padding: 2px;
   z-index: 2;
+  
+  @media (max-width: 576px) {
+    right: 8px;
+  }
 `;

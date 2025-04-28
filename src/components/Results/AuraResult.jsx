@@ -299,7 +299,6 @@ const AuraResult = () => {
         <div className="loading-container">
           <div className="loading-aura"></div>
           <div className="loading-spinner"></div>
-          <img src={logo} alt="ETERNAL" className="loading-logo" />
         </div>
         <p className="loading-text">Materializing Your Eternal Aura...</p>
         <p className="loading-subtext">Connecting to the cosmic energies</p>

@@ -10,6 +10,7 @@ import SparkleService from './services/SparkleService';
 // Import styles
 import './App.css';
 import './styles/GlobalSparkles.css';
+import './styles/responsive.css';
 
 // Auth Pages
 import Login from './components/Auth/Login';
@@ -35,7 +36,7 @@ function App() {
     <AuthProvider>
       <AudioProvider>
         <Router>
-          <div className="app">
+          <div className="app overflow-fix">
             <Routes>
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
