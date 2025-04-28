@@ -1,0 +1,43 @@
+/* src/styles/GlobalSparkles.css */
+.sparkle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    animation: sparkle-float 3s forwards ease-out;
+    opacity: 0;
+    z-index: 10000;
+    pointer-events: none;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 
+                0 0 20px rgba(91, 192, 190, 0.5);
+  }
+  
+  /* Create different sizes of sparkles */
+  .sparkle:nth-child(3n) {
+    width: 4px;
+    height: 4px;
+  }
+  
+  .sparkle:nth-child(3n+1) {
+    width: 8px;
+    height: 8px;
+  }
+  
+  @keyframes sparkle-float {
+    0% { transform: translate(0, 0) scale(0); opacity: 0; }
+    20% { opacity: 1; transform: scale(1); }
+    100% { transform: translate(0, -30px) rotate(180deg) scale(0); opacity: 0; }
+  }
+  
+  /* Ensure the sparkle container overlays everything */
+  #sparkle-container {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    pointer-events: none !important;
+    z-index: 10000 !important;
+    overflow: visible !important;
+  }

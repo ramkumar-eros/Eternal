@@ -9,9 +9,10 @@ const Question = ({
   options,
   selectedOption,
   onSelectOption,
+  isHighlighted,
 }) => {
   return (
-    <div className="question-wrapper">
+    <div className={`question-wrapper ${isHighlighted ? 'highlighted' : ''}`}>
       <div className="glow-orb glow-blue"></div>
       <div className="glow-orb glow-teal"></div>
       
@@ -21,15 +22,23 @@ const Question = ({
         </h3>
 
         <div className="options-grid">
-          {options.map((option, index) => (
-            <button
-              key={index}
-              className={`option-button ${selectedOption === index ? 'selected' : ''}`}
-              onClick={() => onSelectOption(index)}
-            >
-              {option}
-            </button>
-          ))}
+          {options.map((option, index) => {
+            // Handle both formats: string or object with text/index
+            const optionText = typeof option === 'string' ? option : option.text;
+            const optionIndex = typeof option === 'string' ? index : option.index;
+            
+            return (
+              <button
+                key={index}
+                className={`option-button ${selectedOption === optionIndex ? 'selected' : ''}`}
+                onClick={() => onSelectOption(optionIndex)}
+                data-index={optionIndex}
+              >
+                <span className="option-text">{optionText}</span>
+                <span className="option-ripple"></span>
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>

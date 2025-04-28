@@ -4,8 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '../../firebase/config';
 import { useAuth } from '../../context/AuthContext';
+import { useAudio } from '../../context/AudioContext';
 import Question from './Question';
 import { generateGPTResponse } from '../../services/gpt';
+import CosmicJourney from '../common/CosmicJourney';
+import SparkleService from '../../services/SparkleService';
 import './QuestionFlow.css';
 
 // Array of questions with their options
@@ -66,9 +69,29 @@ for (let i = 0; i < questions.length; i += 2) {
 const QuestionFlow = () => {
   const [currentPairIndex, setCurrentPairIndex] = useState(0);
   const [answers, setAnswers] = useState(Array(questions.length).fill(null));
-  const [isLoading, setIsLoading] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const { currentUser } = useAuth();
+  const { startAudio } = useAudio();
   const navigate = useNavigate();
+
+  // Ensure audio is playing
+  useEffect(() => {
+    if (typeof startAudio === 'function') {
+      startAudio();
+    }
+    
+    // Create extra sparkles on component mount
+    for (let i = 0; i < 20; i++) {
+      const x = Math.random() * window.innerWidth;
+      const y = Math.random() * window.innerHeight;
+      setTimeout(() => {
+        if (SparkleService.createSparkle) {
+          SparkleService.createSparkle(x, y);
+        }
+      }, i * 100);
+    }
+  }, [startAudio]);
 
   // Calculate progress percentage
   const progressPercentage = ((currentPairIndex + 1) / questionPairs.length) * 100;
@@ -96,87 +119,96 @@ const QuestionFlow = () => {
 
   // Handle answer selection
   const handleSelectOption = (questionIndex, optionIndex) => {
-    const newAnswers = [...answers];
-    newAnswers[questionIndex] = optionIndex;
-    setAnswers(newAnswers);
+    // Create a visual effect when selecting an option
+    setSelectedOption({ questionIndex, optionIndex });
+    
+    setTimeout(() => {
+      setSelectedOption(null);
+      
+      const newAnswers = [...answers];
+      newAnswers[questionIndex] = optionIndex;
+      setAnswers(newAnswers);
+      
+      // Create sparkle cluster at selected option
+      const element = document.querySelector(`.option-button[data-index="${optionIndex}"]`);
+      if (element && SparkleService.createSparkleCluster) {
+        const rect = element.getBoundingClientRect();
+        const x = rect.left + rect.width / 2;
+        const y = rect.top + rect.height / 2;
+        SparkleService.createSparkleCluster(x, y, 5);
+      }
+    }, 300);
   };
 
-  // Handle next question button
+  // Handle next question button with transition animation
   const handleNextPair = () => {
-    if (currentPairIndex < questionPairs.length - 1) {
-      setCurrentPairIndex(currentPairIndex + 1);
-      // Smooth scroll to top of questions on page change
-      document.querySelector('.question-content').scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    } else {
-      // Submit answers if all questions are answered
-      handleSubmitAnswers();
-    }
+    if (!currentPairAnswered()) return;
+    
+    setIsTransitioning(true);
+    
+    setTimeout(() => {
+      if (currentPairIndex < questionPairs.length - 1) {
+        setCurrentPairIndex(currentPairIndex + 1);
+        // Smooth scroll to top of questions on page change
+        const questionContent = document.querySelector('.question-content');
+        if (questionContent) {
+          questionContent.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        }
+      } else {
+        // Submit answers if all questions are answered
+        handleSubmitAnswers();
+      }
+      
+      setTimeout(() => {
+        setIsTransitioning(false);
+      }, 300);
+    }, 500);
   };
 
-  // Handle previous question button
+  // Handle previous question button with transition animation
   const handlePreviousPair = () => {
-    if (currentPairIndex > 0) {
+    if (currentPairIndex <= 0) return;
+    
+    setIsTransitioning(true);
+    
+    setTimeout(() => {
       setCurrentPairIndex(currentPairIndex - 1);
       // Smooth scroll to top of questions on page change
-      document.querySelector('.question-content').scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    }
+      const questionContent = document.querySelector('.question-content');
+      if (questionContent) {
+        questionContent.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
+      
+      setTimeout(() => {
+        setIsTransitioning(false);
+      }, 300);
+    }, 500);
   };
 
-  // Submit answers to Firestore and generate GPT response
-  const handleSubmitAnswers = async () => {
+  // Navigate to loading page first, then handle submission logic there
+  const handleSubmitAnswers = () => {
     if (!allQuestionsAnswered()) {
       alert('Please answer all questions before submitting.');
       return;
     }
 
-    try {
-      setIsLoading(true);
-      
-      // Prepare the data to save
-      const formattedAnswers = questions.map((q, index) => ({
+    // Store answers in sessionStorage to retrieve on the loading page
+    sessionStorage.setItem('userAnswers', JSON.stringify(
+      questions.map((q, index) => ({
         question: q.question,
         answer: q.options[answers[index]],
-      }));
+      }))
+    ));
 
-      console.log("Saving answers to Firestore:", formattedAnswers);
-      console.log("User ID:", currentUser?.uid);
-
-      // Save answers to Firestore
-      await setDoc(doc(db, 'userAnswers', currentUser.uid), {
-        answers: formattedAnswers,
-        timestamp: new Date().toISOString(),
-      });
-
-      console.log("Answers saved successfully");
-
-      // Generate GPT response based on answers
-      console.log("Generating GPT response");
-      const gptResponse = await generateGPTResponse(formattedAnswers);
-      
-      console.log("GPT response generated", gptResponse);
-
-      // Save GPT response to Firestore
-      await setDoc(doc(db, 'userResults', currentUser.uid), {
-        result: gptResponse,
-        timestamp: new Date().toISOString(),
-      });
-
-      console.log("GPT response saved to Firestore");
-
-      // Navigate to results page
-      navigate('/results');
-    } catch (error) {
-      console.error('Error submitting answers:', error);
-      alert('An error occurred while submitting your answers. Please try again.');
-    } finally {
-      setIsLoading(false);
-    }
+    // Navigate directly to results page with a flag to show loading
+    // This ensures that only the "Materializing" loading screen is shown
+    navigate('/results?loading=true');
   };
 
   // Render the current pair of questions
@@ -184,16 +216,20 @@ const QuestionFlow = () => {
     const currentPair = questionPairs[currentPairIndex];
     
     return (
-      <div className="questions-pair">
+      <div className={`questions-pair ${isTransitioning ? 'transitioning' : ''}`}>
         {currentPair.map((questionIndex) => (
           <Question
             key={questionIndex}
             questionNumber={questionIndex + 1}
             totalQuestions={questions.length}
             questionText={questions[questionIndex].question}
-            options={questions[questionIndex].options}
+            options={questions[questionIndex].options.map((option, index) => ({
+              text: option,
+              index: index // Include index for sparkle effects
+            }))}
             selectedOption={answers[questionIndex]}
             onSelectOption={(optionIndex) => handleSelectOption(questionIndex, optionIndex)}
+            isHighlighted={selectedOption?.questionIndex === questionIndex && selectedOption?.optionIndex !== null}
           />
         ))}
       </div>
@@ -202,46 +238,67 @@ const QuestionFlow = () => {
 
   return (
     <div className="question-flow-container">
-      {isLoading ? (
-        <div className="loading-overlay">
-          <div className="loading-container">
-            <div className="loading-aura"></div>
-            <div className="loading-spinner"></div>
-          </div>
-          <p>Discovering Your Eternal Aura...</p>
+      {/* Cosmic Journey Animation */}
+      <CosmicJourney 
+        currentStep={currentPairIndex} 
+        totalSteps={questionPairs.length}
+      />
+      
+      <div className="progress-container">
+        <span className="progress-text">{getCurrentQuestionNumbers()}</span>
+        <div className="progress-bar">
+          <div className="progress-fill" style={{ width: `${progressPercentage}%` }}></div>
         </div>
-      ) : (
-        <>
-          <div className="progress-container">
-            <span className="progress-text">{getCurrentQuestionNumbers()}</span>
-            <div className="progress-bar">
-              <div className="progress-fill" style={{ width: `${progressPercentage}%` }}></div>
-            </div>
-            <span className="progress-text">{currentPairIndex + 1}/{questionPairs.length}</span>
-          </div>
+        <span className="progress-text journey-text">Cosmic Journey: {currentPairIndex + 1}/{questionPairs.length}</span>
+      </div>
 
-          {renderCurrentQuestionPair()}
+      {renderCurrentQuestionPair()}
 
-          <div className="navigation-buttons">
-            {currentPairIndex > 0 && (
-              <button 
-                className="prev-button" 
-                onClick={handlePreviousPair}
-              >
-                Previous
-              </button>
-            )}
-            
-            <button
-              className="next-button"
-              onClick={handleNextPair}
-              disabled={!currentPairAnswered()}
-            >
-              {currentPairIndex === questionPairs.length - 1 ? 'Submit' : 'Next'}
-            </button>
-          </div>
-        </>
-      )}
+      <div className="navigation-buttons">
+        {currentPairIndex > 0 && (
+          <button 
+            className="prev-button" 
+            onClick={handlePreviousPair}
+            disabled={isTransitioning}
+          >
+            <span className="button-icon prev-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M19 12H5"></path>
+                <path d="M12 19l-7-7 7-7"></path>
+              </svg>
+            </span>
+            Previous
+          </button>
+        )}
+        
+        <button
+          className="next-button"
+          onClick={handleNextPair}
+          disabled={!currentPairAnswered() || isTransitioning}
+        >
+          {currentPairIndex === questionPairs.length - 1 ? (
+            <>
+              Complete Journey
+              <span className="button-icon next-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14"></path>
+                  <path d="M12 5l7 7-7 7"></path>
+                </svg>
+              </span>
+            </>
+          ) : (
+            <>
+              Continue Journey
+              <span className="button-icon next-icon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14"></path>
+                  <path d="M12 5l7 7-7 7"></path>
+                </svg>
+              </span>
+            </>
+          )}
+        </button>
+      </div>
     </div>
   );
 };

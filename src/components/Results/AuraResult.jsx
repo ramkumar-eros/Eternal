@@ -4,7 +4,9 @@ import { doc, getDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../../firebase/config';
 import { useAuth } from '../../context/AuthContext';
-import './AuraResult.css';
+import { useAudio } from '../../context/AudioContext';
+import CosmicJourney from '../common/CosmicJourney';
+import './AuraResult.css'; // We'll use our enhanced CSS
 import logo from './logo.png'; // Ensure you have the logo image in this path
 
 const AuraResult = () => {
@@ -12,8 +14,45 @@ const AuraResult = () => {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('aura');
   const [processedResult, setProcessedResult] = useState(null);
+  const [animateAura, setAnimateAura] = useState(false);
   const { currentUser } = useAuth();
+  const { startAudio } = useAudio();
   const navigate = useNavigate();
+
+  // Ensure audio is playing and add sparkle effects
+  useEffect(() => {
+    startAudio();
+    
+    // Add aura animation after a delay
+    const auraTimer = setTimeout(() => {
+      setAnimateAura(true);
+    }, 2000);
+    
+    // Generate sparkles on mouse movement
+    const addSparkle = (e) => {
+      if (Math.random() < 0.1) { // Only add sparkles 10% of the time
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        sparkle.style.left = `${e.clientX}px`;
+        sparkle.style.top = `${e.clientY}px`;
+        document.body.appendChild(sparkle);
+        
+        // Remove sparkle after animation completes
+        setTimeout(() => {
+          if (sparkle.parentNode) {
+            sparkle.parentNode.removeChild(sparkle);
+          }
+        }, 3000);
+      }
+    };
+    
+    document.addEventListener('mousemove', addSparkle);
+    
+    return () => {
+      clearTimeout(auraTimer);
+      document.removeEventListener('mousemove', addSparkle);
+    };
+  }, [startAudio]);
 
   useEffect(() => {
     const fetchResult = async () => {
@@ -40,9 +79,10 @@ const AuraResult = () => {
       } catch (error) {
         console.error('Error fetching result:', error);
       } finally {
+        // Add a small delay to ensure the loading screen is visible
         setTimeout(() => {
           setLoading(false);
-        }, 1500); // Add a small delay to ensure the loading screen is visible
+        }, 2000);
       }
     };
 
@@ -77,9 +117,22 @@ const AuraResult = () => {
     return processed;
   };
 
-  // Function to handle tab switching
+  // Function to handle tab switching with animation
   const handleTabChange = (tab) => {
-    setActiveTab(tab);
+    if (tab === activeTab) return;
+    
+    // Add transition class
+    document.querySelector('.result-content').classList.add('tab-transition');
+    
+    // Wait for transition to complete before changing tab
+    setTimeout(() => {
+      setActiveTab(tab);
+      
+      // Remove transition class after new content is loaded
+      setTimeout(() => {
+        document.querySelector('.result-content').classList.remove('tab-transition');
+      }, 50);
+    }, 300);
   };
 
   // Function to determine which colors to display in the aura visualization
@@ -224,6 +277,22 @@ const AuraResult = () => {
       .map(para => para.trim());
   };
 
+  // Add shooting stars at random positions
+  const renderShootingStars = () => {
+    const stars = [];
+    for (let i = 0; i < 3; i++) {
+      const style = {
+        top: `${Math.random() * 100}%`,
+        left: `${Math.random() * 100}%`,
+        transform: `rotate(${Math.random() * 180}deg)`,
+        animationDelay: `${Math.random() * 15}s`,
+        width: `${Math.random() * 50 + 50}px`
+      };
+      stars.push(<div key={i} className="shooting-star" style={style}></div>);
+    }
+    return stars;
+  };
+
   if (loading) {
     return (
       <div className="loading-overlay">
@@ -233,29 +302,43 @@ const AuraResult = () => {
           <img src={logo} alt="ETERNAL" className="loading-logo" />
         </div>
         <p className="loading-text">Materializing Your Eternal Aura...</p>
+        <p className="loading-subtext">Connecting to the cosmic energies</p>
       </div>
     );
   }
 
   return (
     <div className="aura-result-container">
+      {/* Cosmic Journey Animation */}
+      <CosmicJourney currentStep={8} totalSteps={10} />
+      
       {/* Cosmic background elements */}
       <div className="floating-orb orb-1"></div>
       <div className="floating-orb orb-2"></div>
       <div className="floating-orb orb-3"></div>
+      <div className="floating-orb orb-4"></div>
       
       <div className="cosmic-star star-1"></div>
       <div className="cosmic-star star-2"></div>
       <div className="cosmic-star star-3"></div>
       <div className="cosmic-star star-4"></div>
       <div className="cosmic-star star-5"></div>
+      <div className="cosmic-star star-6"></div>
+      <div className="cosmic-star star-7"></div>
+      <div className="cosmic-star star-8"></div>
+      
+      {/* Shooting stars */}
+      <div className="shooting-star shooting-1"></div>
+      <div className="shooting-star shooting-2"></div>
+      <div className="shooting-star shooting-3"></div>
+      {renderShootingStars()}
 
       <div className="results-header">
         <img src={logo} alt="ETERNAL" className="eternal-logo" />
         <h2 className="result-title">Your Eternal Aura Reading</h2>
       </div>
 
-      <div className="aura-visualization">
+      {/* <div className={`aura-visualization ${animateAura ? 'animate' : ''}`}>
         <div className="aura-circle">
           <div 
             className="aura-glow" 
@@ -273,7 +356,7 @@ const AuraResult = () => {
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='200' viewBox='0 0 100 200' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0C40 0 35 10 35 20C35 30 40 35 40 40C40 45 37.5 50 35 55C32.5 60 30 65 30 70C30 75 32.5 80 35 85C37.5 90 40 95 40 100C40 105 35 115 35 125C35 135 40 145 45 155C50 165 55 175 50 185C45 195 40 200 40 200H60C60 200 55 195 50 185C45 175 50 165 55 155C60 145 65 135 65 125C65 115 60 105 60 100C60 95 62.5 90 65 85C67.5 80 70 75 70 70C70 65 67.5 60 65 55C62.5 50 60 45 60 40C60 35 65 30 65 20C65 10 60 0 50 0Z' fill='black'/%3E%3C/svg%3E")`
           }}></div>
         </div>
-      </div>
+      </div> */}
 
       <div className="result-tabs">
         <button 
@@ -281,28 +364,32 @@ const AuraResult = () => {
           onClick={() => handleTabChange('aura')}
         >
           Aura Colors
+          <span className="tab-active-indicator"></span>
         </button>
         <button 
           className={`tab-button ${activeTab === 'personality' ? 'active' : ''}`}
           onClick={() => handleTabChange('personality')}
         >
           Personality
+          <span className="tab-active-indicator"></span>
         </button>
         <button 
           className={`tab-button ${activeTab === 'spiritual' ? 'active' : ''}`}
           onClick={() => handleTabChange('spiritual')}
         >
           Spiritual Profile
+          <span className="tab-active-indicator"></span>
         </button>
         <button 
           className={`tab-button ${activeTab === 'energy' ? 'active' : ''}`}
           onClick={() => handleTabChange('energy')}
         >
           Energy Plan
+          <span className="tab-active-indicator"></span>
         </button>
       </div>
 
-      <div className="result-content">
+      <div className={`result-content ${activeTab}`}>
         {processedResult && (
           <>
             {activeTab === 'aura' && (

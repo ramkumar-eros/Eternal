@@ -1,29 +1,77 @@
 // src/App.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
+import { AudioProvider } from './context/AudioContext';
+import ProtectedRoute from './components/Auth/ProtectedRoute';
+import SimpleMuteButton from './components/common/SimpleMuteButton';
+import SparkleService from './services/SparkleService';
+
+// Import styles
+import './App.css';
+import './styles/GlobalSparkles.css';
+
+// Auth Pages
 import Login from './components/Auth/Login';
 import Signup from './components/Auth/Signup';
-import Onboarding from './components/Onboarding/Onboarding';
+
+// Main Pages
+import Onboarding from './pages/Onboarding';
 import QuestionsPage from './pages/QuestionsPage';
 import ResultsPage from './pages/ResultsPage';
-import './styles/responsive.css';
 
 function App() {
+  // Initialize sparkle service on app mount
+  useEffect(() => {
+    SparkleService.init();
+    
+    // Clean up on app unmount
+    return () => {
+      SparkleService.cleanup();
+    };
+  }, []);
+
   return (
-    <Router>
-      <AuthProvider>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/onboarding" element={<Onboarding />} />
-          <Route path="/questions" element={<QuestionsPage />} />
-          <Route path="/results" element={<ResultsPage />} />
-          {/* Redirect to login by default */}
-          <Route path="*" element={<Navigate to="/login" />} />
-        </Routes>
-      </AuthProvider>
-    </Router>
+    <AuthProvider>
+      <AudioProvider>
+        <Router>
+          <div className="app">
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route 
+                path="/onboarding" 
+                element={
+                  <ProtectedRoute>
+                    <Onboarding />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/questions" 
+                element={
+                  <ProtectedRoute>
+                    <QuestionsPage />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/results" 
+                element={
+                  <ProtectedRoute>
+                    <ResultsPage />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route path="/" element={<Navigate to="/login" replace />} />
+            </Routes>
+            
+            {/* Global Mute Button - appears on all pages */}
+            <SimpleMuteButton />
+          </div>
+        </Router>
+      </AudioProvider>
+    </AuthProvider>
   );
 }
 

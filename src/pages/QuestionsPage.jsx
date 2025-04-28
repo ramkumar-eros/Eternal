@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import QuestionFlow from '../components/Questions/QuestionFlow';
+import CosmicJourney from '../components/common/CosmicJourney';
 import './QuestionsPage.css';
 import logo from './logo.png'; // Ensure you have the logo image in this path
 
@@ -23,6 +24,8 @@ const QuestionsPage = () => {
 
   return (
     <div className="questions-page">
+      {/* The CosmicJourney component is now handled by QuestionFlow */}
+      
       {/* Background effects */}
       <div className="bg-effects">
         <div className="bg-gradient-1"></div>
