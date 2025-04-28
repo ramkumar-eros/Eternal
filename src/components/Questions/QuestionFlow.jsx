@@ -82,14 +82,14 @@ const QuestionFlow = () => {
     }
     
     // Create extra sparkles on component mount
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 5; i++) {
       const x = Math.random() * window.innerWidth;
       const y = Math.random() * window.innerHeight;
       setTimeout(() => {
         if (SparkleService.createSparkle) {
           SparkleService.createSparkle(x, y);
         }
-      }, i * 100);
+      }, i * 1000);
     }
   }, [startAudio]);
 

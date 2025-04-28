@@ -32,7 +32,7 @@ class SparkleService {
         document.body.appendChild(container);
       }
       
-      // Start creating random sparkles
+      // Start creating random sparkles (reduced frequency)
       this.startRandomSparkles();
     }
     
@@ -58,7 +58,7 @@ class SparkleService {
      * Handle mouse movement to create sparkles
      */
     handleMouseMove(e) {
-      if (Math.random() < 0.05) { // 5% chance to create sparkle on mouse move
+      if (Math.random() < 0.03) { // Reduced from 0.05 to 0.03 (3% chance)
         this.createSparkle(e.clientX, e.clientY);
       }
     }
@@ -89,8 +89,8 @@ class SparkleService {
      */
     startRandomSparkles() {
       this.randomSparkleInterval = setInterval(() => {
-        // Create 2-5 random sparkles
-        const count = Math.floor(Math.random() * 4) + 2;
+        // Create 1-2 random sparkles (reduced from 2-5)
+        const count = Math.floor(Math.random() * 2) + 1;
         
         for (let i = 0; i < count; i++) {
           const x = Math.random() * window.innerWidth;
@@ -101,17 +101,17 @@ class SparkleService {
             this.createSparkle(x, y);
           }, i * 200);
         }
-      }, 1000); // Create sparkles every second
+      }, 1500); // Every 1.5 seconds (increased interval time)
     }
     
     /**
-     * Create many sparkles at once (for special effects)
+     * Create a few sparkles at once (for special effects)
      */
-    createSparkleCluster(x, y, count = 10) {
+    createSparkleCluster(x, y, count = 3) { // Reduced from 10 to 3
       for (let i = 0; i < count; i++) {
         // Create sparkles in a small area around the point
-        const offsetX = (Math.random() - 0.5) * 100;
-        const offsetY = (Math.random() - 0.5) * 100;
+        const offsetX = (Math.random() - 0.5) * 50; // Reduced from 100 to 50
+        const offsetY = (Math.random() - 0.5) * 50; // Reduced from 100 to 50
         
         setTimeout(() => {
           this.createSparkle(x + offsetX, y + offsetY);
