@@ -29,7 +29,7 @@ export const generateGPTResponse = async (answers) => {
     const response = await axios.post(
       API_ENDPOINT,
       {
-        model: "gpt-3.5-turbo", // You can change this to a more appropriate model if needed
+        model: "gpt-4-turbo", // You can change this to a more appropriate model if needed
         messages: [
           {
             role: "system",
