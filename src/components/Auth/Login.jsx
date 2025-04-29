@@ -157,24 +157,17 @@ const Login = () => {
         }
       }
     }  catch (error) {
-      // Detailed error logging
-      console.error(`Social login error (${provider}):`, {
-        code: error.code,
-        message: error.message,
-        fullError: error
-      });
+      console.error(`${providerName} login error:`, error);
       
-      // User-friendly error messages based on error codes
-      let errorMessage = `Failed to login with ${provider}.`;
-      
-      // Show more specific error messages
-      if (error.code === 'auth/unauthorized-domain') {
-        errorMessage = `This domain is not authorized for authentication. Please contact support.`;
-      } else if (error.code === 'auth/popup-blocked') {
-        errorMessage = `Pop-up was blocked. Please enable pop-ups for this site and try again.`;
+      // Reset state regardless of error type
+      if (error.code === 'auth/popup-closed-by-user') {
+        setError(`${providerName} login was cancelled.`);
+      } else {
+        setError(`Failed to login with ${providerName}: ${error.message}`);
       }
-      
-      setError(errorMessage);
+    } finally {
+      // Always reset loading state
+      setSocialLoading('');
     }
   };
 
