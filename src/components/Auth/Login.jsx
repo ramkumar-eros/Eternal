@@ -156,19 +156,25 @@ const Login = () => {
           navigate('/signup', { state: { fromSocial: true, provider: providerName } });
         }
       }
-    } catch (error) {
-      console.error(`${providerName} login error:`, error);
+    }  catch (error) {
+      // Detailed error logging
+      console.error(`Social login error (${provider}):`, {
+        code: error.code,
+        message: error.message,
+        fullError: error
+      });
       
-      let errorMessage = `Failed to login with ${providerName}.`;
-      if (error.code === 'auth/popup-closed-by-user') {
-        errorMessage = `${providerName} login was cancelled.`;
-      } else if (error.code === 'auth/account-exists-with-different-credential') {
-        errorMessage = `An account already exists with the same email. Try another login method.`;
+      // User-friendly error messages based on error codes
+      let errorMessage = `Failed to login with ${provider}.`;
+      
+      // Show more specific error messages
+      if (error.code === 'auth/unauthorized-domain') {
+        errorMessage = `This domain is not authorized for authentication. Please contact support.`;
+      } else if (error.code === 'auth/popup-blocked') {
+        errorMessage = `Pop-up was blocked. Please enable pop-ups for this site and try again.`;
       }
       
       setError(errorMessage);
-    } finally {
-      setSocialLoading('');
     }
   };
 
