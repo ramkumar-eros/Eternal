@@ -1,13 +1,22 @@
 // src/components/Auth/Signup.jsx
-import React, { useState, useRef } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { 
+  createUserWithEmailAndPassword, 
+  updateProfile,
+  signInWithPopup,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+  getAdditionalUserInfo
+} from 'firebase/auth';
 import { auth, db } from '../../firebase/config';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import logo from './logo.png';
 import signupImage from './signup.png';
+import googleIcon from './google-icon.png'; // Add this image to your assets
+import facebookIcon from './facebook-icon.png'; // Add this image to your assets
 import { 
   SignupContainer, CosmicBackground, OrbFloat, StarField,
   LeftSection, LogoContainer, LogoText, SignupImageWrapper, SignupImage, 
@@ -25,6 +34,17 @@ import {
   UploadPlaceholder, UploadIcon, UploadText, LoginText, LoginLink,
   ErrorMessage, SuccessMessage, DateTimeLabel
 } from './SignupStyles';
+
+// Import shared social auth styled components
+import {
+  SocialLoginContainer,
+  SocialButton,
+  SocialIcon,
+  Divider,
+  DividerLine,
+  DividerText,
+  SocialSignupInfo
+} from './SocialAuthStyles';
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -46,14 +66,50 @@ const Signup = () => {
   const [profileImage, setProfileImage] = useState(null);
   const [profileImageURL, setProfileImageURL] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [socialLoading, setSocialLoading] = useState('');
   const [currentStep, setCurrentStep] = useState(1);
   const totalSteps = 2;
+  const [fromSocial, setFromSocial] = useState(false);
+  const [socialProvider, setSocialProvider] = useState('');
   
   const mediaRecorder = useRef(null);
   const audioChunks = useRef([]);
   const fileInputRef = useRef(null);
   
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Check if user is coming from social login
+  useEffect(() => {
+    if (location.state?.fromSocial) {
+      setFromSocial(true);
+      setSocialProvider(location.state.provider);
+      setCurrentStep(2); // Skip to the personal details step
+      
+      // Fetch user data if available
+      const fetchUserData = async () => {
+        try {
+          if (auth.currentUser) {
+            // Update form data with info from social provider
+            setFormData(prev => ({
+              ...prev,
+              fullName: auth.currentUser.displayName || '',
+              emailPhone: auth.currentUser.email || ''
+            }));
+            
+            // If user has profile picture from social provider
+            if (auth.currentUser.photoURL) {
+              setProfileImageURL(auth.currentUser.photoURL);
+            }
+          }
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      };
+      
+      fetchUserData();
+    }
+  }, [location]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -77,7 +133,6 @@ const Signup = () => {
     });
   };
 
-  // Function to handle date change
   const handleDateChange = (date) => {
     setFormData({
       ...formData,
@@ -85,7 +140,6 @@ const Signup = () => {
     });
   };
   
-  // Time input handler with auto-colon formatting
   const handleTimeInputChange = (e) => {
     let value = e.target.value;
     
@@ -129,7 +183,54 @@ const Signup = () => {
     setIsLoading(true);
     setSuccess('');
   
-    // Basic validation
+    // If user is from social auth, handle differently
+    if (fromSocial) {
+      try {
+        // No need to create a new user, just update the existing one
+        if (!auth.currentUser) {
+          throw new Error("No authenticated user found");
+        }
+        
+        // Update profile data
+        const userData = {
+          fullName: auth.currentUser.displayName || formData.fullName,
+          emailPhone: auth.currentUser.email || formData.emailPhone,
+          gender: formData.gender || "",
+          birthdate: formData.birthdate,
+          birthTime: formData.birthTime ? `${formData.birthTime} ${formData.timeFormat}` : "",
+          provider: socialProvider,
+          updatedAt: new Date(),
+        };
+        
+        // Save user data to Firestore
+        await setDoc(doc(db, "users", auth.currentUser.uid), userData, { merge: true });
+        
+        // Handle profile image and audio as before
+        if (profileImage) {
+          localStorage.setItem(`profile_image_${auth.currentUser.uid}`, profileImageURL);
+        }
+        
+        if (audioBlob) {
+          localStorage.setItem(`voice_recording_${auth.currentUser.uid}`, audioURL);
+        }
+        
+        setIsLoading(false);
+        setSuccess('Profile completed successfully!');
+        
+        // Navigate to onboarding
+        setTimeout(() => {
+          navigate('/onboarding');
+        }, 2000);
+        
+      } catch (error) {
+        setError('Failed to update profile: ' + error.message);
+        setIsLoading(false);
+      }
+      
+      return;
+    }
+    
+    // Regular email/password signup flow
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
       setIsLoading(false);
@@ -149,27 +250,26 @@ const Signup = () => {
         displayName: formData.fullName
       });
       
-      // Instead of uploading to Firebase Storage, store file references locally
+      // Handle profile image and audio
       if (profileImage) {
-        // Save reference to local storage with user ID
         localStorage.setItem(`profile_image_${userCredential.user.uid}`, profileImageURL);
       }
       
       if (audioBlob) {
-        // Save reference to local storage with user ID
         localStorage.setItem(`voice_recording_${userCredential.user.uid}`, audioURL);
       }
       
-      // Create user document reference
+      // Create user document
       const userDocRef = doc(db, "users", userCredential.user.uid);
       
-      // Prepare user data object
+      // Prepare user data
       const userData = {
         fullName: formData.fullName,
         emailPhone: formData.emailPhone,
         gender: formData.gender || "",
         birthdate: formData.birthdate,
         birthTime: formData.birthTime ? `${formData.birthTime} ${formData.timeFormat}` : "",
+        provider: "email",
         createdAt: new Date(),
       };
       
@@ -179,13 +279,85 @@ const Signup = () => {
       setIsLoading(false);
       setSuccess('Account created successfully!');
       
-      // Navigate to onboarding after a small delay to show success message
+      // Navigate to onboarding after a small delay
       setTimeout(() => {
         navigate('/onboarding');
       }, 2000);
     } catch (error) {
       setIsLoading(false);
       setError('Failed to create account: ' + error.message);
+    }
+  };
+
+  // Social signup handlers
+  const handleSocialSignup = async (provider) => {
+    setError('');
+    const providerName = provider === 'google' ? 'Google' : 'Facebook';
+    setSocialLoading(provider);
+
+    try {
+      // Select the appropriate provider
+      const authProvider = provider === 'google' 
+        ? new GoogleAuthProvider() 
+        : new FacebookAuthProvider();
+        
+      // Add scopes for additional profile info
+      if (provider === 'google') {
+        authProvider.addScope('profile');
+        authProvider.addScope('email');
+      } else {
+        authProvider.addScope('email');
+        authProvider.addScope('public_profile');
+      }
+
+      // Sign in with popup
+      const result = await signInWithPopup(auth, authProvider);
+      const userInfo = getAdditionalUserInfo(result);
+      const user = result.user;
+
+      // Create a basic user document for new social auth users
+      const userData = {
+        fullName: user.displayName || '',
+        emailPhone: user.email || '',
+        provider: providerName,
+        createdAt: new Date(),
+      };
+
+      // Save basic user data to Firestore
+      await setDoc(doc(db, "users", user.uid), userData);
+      
+      // Update state and navigate to second step
+      setFromSocial(true);
+      setSocialProvider(providerName);
+      
+      // Set form data from social profile
+      setFormData(prev => ({
+        ...prev,
+        fullName: user.displayName || '',
+        emailPhone: user.email || ''
+      }));
+      
+      // If user has profile picture from social provider
+      if (user.photoURL) {
+        setProfileImageURL(user.photoURL);
+      }
+      
+      // Move to step 2 directly
+      setCurrentStep(2);
+      
+    } catch (error) {
+      console.error(`${providerName} signup error:`, error);
+      
+      let errorMessage = `Failed to sign up with ${providerName}.`;
+      if (error.code === 'auth/popup-closed-by-user') {
+        errorMessage = `${providerName} signup was cancelled.`;
+      } else if (error.code === 'auth/account-exists-with-different-credential') {
+        errorMessage = `An account already exists with the same email. Try another signup method.`;
+      }
+      
+      setError(errorMessage);
+    } finally {
+      setSocialLoading('');
     }
   };
 
@@ -278,8 +450,14 @@ const Signup = () => {
       
       <RightSection>
         <SignupForm onSubmit={handleSignup}>
-          <SignupHeader>Create Your Account</SignupHeader>
+          <SignupHeader>{fromSocial ? 'Complete Your Profile' : 'Create Your Account'}</SignupHeader>
           <SignupSubheader>Your gateway to cosmic discovery</SignupSubheader>
+          
+          {fromSocial && (
+            <SocialSignupInfo>
+              <p>Welcome! You've signed in with <strong>{socialProvider}</strong>. Please complete your profile to continue your cosmic journey.</p>
+            </SocialSignupInfo>
+          )}
           
           <ProgressBar>
             {Array.from({ length: totalSteps }).map((_, index) => (
@@ -293,6 +471,43 @@ const Signup = () => {
           
           {currentStep === 1 && (
             <StepContainer>
+              {/* Social signup buttons */}
+              <SocialLoginContainer>
+                <SocialButton 
+                  type="button" 
+                  provider="google"
+                  onClick={() => handleSocialSignup('google')} 
+                  disabled={socialLoading !== ''}
+                >
+                  {socialLoading === 'google' ? (
+                    <LoadingSpinner small="true" />
+                  ) : (
+                    <SocialIcon src={googleIcon} alt="Google" />
+                  )}
+                  Continue with Google
+                </SocialButton>
+                
+                <SocialButton 
+                  type="button" 
+                  provider="facebook"
+                  onClick={() => handleSocialSignup('facebook')} 
+                  disabled={socialLoading !== ''}
+                >
+                  {socialLoading === 'facebook' ? (
+                    <LoadingSpinner small="true" />
+                  ) : (
+                    <SocialIcon src={facebookIcon} alt="Facebook" />
+                  )}
+                  Continue with Facebook
+                </SocialButton>
+              </SocialLoginContainer>
+              
+              <Divider>
+                <DividerLine />
+                <DividerText>or</DividerText>
+                <DividerLine />
+              </Divider>
+            
               <InputGroup>
                 <InputLabel>Full Name</InputLabel>
                 <IconInput>
@@ -314,12 +529,12 @@ const Signup = () => {
               </InputGroup>
 
               <InputGroup>
-                <InputLabel>Email or Phone</InputLabel>
+                <InputLabel>Email</InputLabel>
                 <IconInput>
                   <StyledInput
-                    type="text"
+                    type="email"
                     name="emailPhone"
-                    placeholder="Enter email"
+                    placeholder="Enter your email"
                     value={formData.emailPhone}
                     onChange={handleChange}
                     required
@@ -607,22 +822,24 @@ const Signup = () => {
               </AdditionalDataContainer>
               
               <ButtonRow>
-                <BackButton type="button" onClick={prevStep}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M19 12H5"></path>
-                    <path d="M12 19l-7-7 7-7"></path>
-                  </svg>
-                  Back
-                </BackButton>
-                <SubmitButton type="submit" disabled={isLoading}>
+                {!fromSocial && (
+                  <BackButton type="button" onClick={prevStep}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M19 12H5"></path>
+                      <path d="M12 19l-7-7 7-7"></path>
+                    </svg>
+                    Back
+                  </BackButton>
+                )}
+                <SubmitButton type="submit" disabled={isLoading} style={fromSocial ? {flex: 1} : {}}>
                   {isLoading ? (
                     <>
                       <LoadingSpinner />
-                      Creating Account...
+                      {fromSocial ? 'Saving Profile...' : 'Creating Account...'}
                     </>
                   ) : (
                     <>
-                      Begin Journey
+                      {fromSocial ? 'Complete Profile' : 'Begin Journey'}
                       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M5 12h14"></path>
                         <path d="M12 5l7 7-7 7"></path>
@@ -635,7 +852,7 @@ const Signup = () => {
           )}
           
           <LoginText>
-            Already have an account? <LoginLink to="/login">Login</LoginLink>
+            {fromSocial ? 'Changed your mind?' : 'Already have an account?'} <LoginLink to="/login">Login</LoginLink>
           </LoginText>
         </SignupForm>
       </RightSection>
